@@ -74,6 +74,7 @@ In order to fully use the data, the NA values will be imputed to the average ste
 
 
 ```r
+nacount = sum(is.na(activ$steps))
 activ2 <- merge(activ, inttot, by.x = "interval", by.y ="interval")
 top <- nrow(activ2)
 for (i in seq_along(1:top)) {
@@ -81,7 +82,11 @@ for (i in seq_along(1:top)) {
             activ2[i, 2] <- activ2[i, 4]
       }
 }
+```
+### The total number of NAs in the steps data is 2304.
 
+
+```r
 grp3 <- group_by(activ2, date)
 totstep2 <- summarize(grp3, totalstep = sum(steps), na.rm=TRUE)
 hist(totstep2$totalstep, c = 'coral', 
@@ -89,7 +94,7 @@ hist(totstep2$totalstep, c = 'coral',
      main = 'Frequency of Total Steps per Day')
 ```
 
-![](PA1_template_files/figure-html/impute-1.png)\
+![](PA1_template_files/figure-html/imputecompare-1.png)\
 
 ```r
 meanstp2 = as.integer(mean(totstep2$totalstep, na.rm = TRUE))

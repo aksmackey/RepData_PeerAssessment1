@@ -64,6 +64,7 @@ maxstep = as.integer(maxline$avgstep)
 In order to fully use the data, the NA values will be imputed to the average step count for that particular time interval. We then look at the same plots as we first created to compare the imuted data to the original data. 
 
 ```{r impute}
+nacount = sum(is.na(activ$steps))
 activ2 <- merge(activ, inttot, by.x = "interval", by.y ="interval")
 top <- nrow(activ2)
 for (i in seq_along(1:top)) {
@@ -71,7 +72,10 @@ for (i in seq_along(1:top)) {
             activ2[i, 2] <- activ2[i, 4]
       }
 }
+```
+### The total number of NAs in the steps data is `r nacount`.
 
+```{r imputecompare}
 grp3 <- group_by(activ2, date)
 totstep2 <- summarize(grp3, totalstep = sum(steps), na.rm=TRUE)
 hist(totstep2$totalstep, c = 'coral', 
